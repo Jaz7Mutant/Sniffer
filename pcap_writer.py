@@ -10,6 +10,7 @@ class PCAPWriter:
 
     def __enter__(self):
         self._fh = open(self.filename + '.pcap', 'ba')
+        self._fh.truncate(0)
         self._writer = pcap.Writer(self._fh)
         return self
 
