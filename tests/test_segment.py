@@ -4,7 +4,7 @@ import unittest
 
 from dpkt import hexdump
 
-from segment import UDPSegment, TCPSegment
+from unpacker.segment import UDPSegment, TCPSegment
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))

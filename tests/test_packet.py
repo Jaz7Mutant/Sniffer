@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
-from packet import IPv4Packet, IPv6Packet, ARPPacket
+from unpacker.packet import IPv4Packet, IPv6Packet, ARPPacket
 
 
 class TestIPv4(unittest.TestCase):

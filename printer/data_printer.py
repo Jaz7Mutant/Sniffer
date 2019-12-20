@@ -1,6 +1,6 @@
-from frame import Frame
-from packet import IPv4Packet, IPv6Packet, ARPPacket
-from segment import TCPSegment, UDPSegment
+from unpacker.frame import Frame
+from unpacker.packet import IPv4Packet, IPv6Packet, ARPPacket
+from unpacker.segment import TCPSegment, UDPSegment
 
 
 def print_ethernet_frame(frame: Frame):

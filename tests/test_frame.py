@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
-from frame import Frame
+from unpacker.frame import Frame
 
 
 class TestFrame(unittest.TestCase):

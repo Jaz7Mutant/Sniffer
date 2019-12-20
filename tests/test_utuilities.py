@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
-from utilities import format_mac, ipv4, ipv6
+from unpacker.utilities import format_mac, ipv4, ipv6
 
 
 class TestUtilities(unittest.TestCase):

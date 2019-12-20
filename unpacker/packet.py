@@ -1,6 +1,6 @@
 import struct
 
-from utilities import ipv4, format_mac, ipv6
+from unpacker.utilities import ipv4, format_mac, ipv6
 
 
 class IPv4Packet:
