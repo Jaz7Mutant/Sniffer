@@ -23,23 +23,24 @@ class IPv6Packet:
     def __init__(self, raw_packet: bytes):
         version_header_len = raw_packet[0]
         self.version = version_header_len >> 4
-        self.payload_length, self.next_header, self.hop_limit = struct.unpack(
+        self.payload_length, self.protocol, self.hop_limit = struct.unpack(
             '! H B B', raw_packet[4:8])
         self.source = ipv6(raw_packet[8:24])
         self.target = ipv6(raw_packet[24:40])
+        self.data = raw_packet[40:]
 
 
 class ARPPacket:
     def __init__(self, raw_packet: bytes):
         self.hardware_type = raw_packet[:2].hex()
         self.protocol_type = raw_packet[2:4].hex()
-        self.source_mac = format_mac(raw_packet[8:14])
-        source_ip = raw_packet[14:18]
-        self.target_mac = format_mac(raw_packet[18:24])
-        target_ip = raw_packet[24:28]
         if self.protocol_type == '0800':
-            self.source_ip = ipv4(source_ip)
-            self.target_ip = ipv4(target_ip)
+            self.source_mac = format_mac(raw_packet[8:14])
+            self.source_ip = ipv4(raw_packet[14:18])
+            self.target_mac = format_mac(raw_packet[18:24])
+            self.target_ip = ipv4(raw_packet[24:28])
         if self.protocol_type == '86dd':
-            self.source_ip = ipv6(source_ip)
-            self.target_ip = ipv6(target_ip)
+            self.source_mac = format_mac(raw_packet[8:14])
+            self.source_ip = ipv6(raw_packet[14:30])
+            self.target_mac = format_mac(raw_packet[30:36])
+            self.target_ip = ipv6(raw_packet[36:52])

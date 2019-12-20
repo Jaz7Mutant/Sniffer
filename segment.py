@@ -4,14 +4,12 @@ from dpkt import hexdump
 
 
 class OtherSegment:
-    # todo
-    pass
+    pass # todo
 
 
 # protocol == 1
 class ICMPSegment:
-    # todo
-    pass
+    pass # todo
 
 
 # protocol == 17
@@ -28,6 +26,7 @@ class TCPSegment:
         self.source_port, self.target_port, self.sequence, \
             self.acknowledgement = struct.unpack('! H H L L', raw_segment[:12])
         flags = raw_segment[14]
+        b = bytes(raw_segment[14])
         self.urg = (flags & 32) >> 5
         self.ack = (flags & 16) >> 4
         self.psh = (flags & 8) >> 3
