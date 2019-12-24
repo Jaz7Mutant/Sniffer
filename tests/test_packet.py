@@ -20,8 +20,8 @@ class TestIPv4(unittest.TestCase):
         self.assertEqual(packet.offset, 0)
         self.assertEqual(packet.ttl, 58)
         self.assertEqual(packet.protocol, 6)
-        self.assertEqual(packet.target, '192.168.0.101')
-        self.assertEqual(packet.source, '87.240.129.131')
+        self.assertEqual(packet.target_ip, '192.168.0.101')
+        self.assertEqual(packet.source_ip, '87.240.129.131')
         self.assertEqual(packet.data.hex(), '01bbfdad9c8a40dd4405')
 
 
@@ -37,9 +37,9 @@ class TestIPv6(unittest.TestCase):
         self.assertEqual(packet.protocol, 58)
         self.assertEqual(packet.hop_limit, 255)
         self.assertEqual(
-            packet.source, 'FE80:0000:0000:0000:6935:267B:0D92:9125')
+            packet.source_ip, 'FE80:0000:0000:0000:6935:267B:0D92:9125')
         self.assertEqual(
-            packet.target, 'FF02:0000:0000:0000:0000:0000:0000:0001')
+            packet.target_ip, 'FF02:0000:0000:0000:0000:0000:0000:0001')
         self.assertEqual(packet.data.hex(), '88004e1a200000')
 
 

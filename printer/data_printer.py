@@ -29,8 +29,8 @@ def print_ipv4_packet(packet: IPv4Packet):
             packet.offset,
             packet.ttl,
             packet.protocol,
-            packet.target,
-            packet.source
+            packet.target_ip,
+            packet.source_ip
         )
     )
 
@@ -49,8 +49,8 @@ def print_ipv6_packet(packet: IPv6Packet):
             packet.payload_length,
             packet.protocol,
             packet.hop_limit,
-            packet.source,
-            packet.target
+            packet.source_ip,
+            packet.target_ip
         )
     )
 

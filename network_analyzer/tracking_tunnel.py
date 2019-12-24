@@ -1,24 +1,28 @@
-from unpacker.frame import Frame
-
-
 class TrackingTunnel:
-    def __init__(self, source_mac: str, target_mac: str, bidirectional: bool):
-        self.source_mac = source_mac
-        self.target_mac = target_mac
+    def __init__(self, source_ip: str, target_ip: str, bidirectional: bool):
+        self.broadcast = False
+        if source_ip == '' and target_ip == '':
+            self.broadcast = True
+            self.source_ip = 'ALL'
+            self.target_ip = 'ALL'
+        else:
+            self.source_ip = source_ip
+            self.target_ip = target_ip
         self.bidirectional = bidirectional
-        self.frame_count = [0]
+        self.packet_count = [0]
 
-    def check_frame(self, frame: Frame):
-        if ((frame.source_mac == self.source_mac
-                and frame.destination_mac == self.target_mac)
-                or (self.bidirectional
-                    and frame.source_mac == self.target_mac
-                    and frame.destination_mac == self.source_mac)):
+    def check_packet(self, packet):
+        if (self.broadcast or
+                (packet.source_ip == self.source_ip and
+                 packet.target_ip == self.target_ip) or
+                (self.bidirectional and
+                 packet.source_ip == self.target_ip and
+                 packet.target_ip == self.source_ip)):
             self.increase_frame_count()
 
     def get_updated_frame_count(self):
-        self.frame_count.append(0)
-        return self.frame_count[:-1]
+        self.packet_count.append(0)
+        return self.packet_count[:-1]
 
     def increase_frame_count(self):
-        self.frame_count[-1] += 1
+        self.packet_count[-1] += 1

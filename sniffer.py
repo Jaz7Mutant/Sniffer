@@ -1,10 +1,8 @@
 #! /usr/local/bin/python3.5
-import sys
 from threading import Thread
 from time import sleep
 
 import pyqtgraph as pg
-from pyqtgraph.Qt import QtCore, QtGui
 from scapy.all import IFACES
 # import socket # linux
 from scapy.config import conf
@@ -29,37 +27,32 @@ def main():
 
     tracking_tunnels = list()
     while True:
-        print('Write source and target mac (XX:XX:XX:XX:XX:XX XX:XX:XX:XX:XX)')
+        print('Write source_ip and target_ip (X.X.X.X X.X.X.X)')
         print('Write empty string to finish')
         raw_string = input()
         if raw_string == '':
+            tracking_tunnels.append(TrackingTunnel('', '', True))
             break
         source, target = raw_string.split(' ')
         tracking_tunnels.append(TrackingTunnel(source, target, True))
 
     network_load_plot = NetworkLoadPlot(tracking_tunnels)
     thread1 = Thread(target=update_plot, args=(network_load_plot,))
-    thread2 = Thread(target=sniff, args=(sock, network_load_plot, tracking_tunnels))
-    thread2.start()
+    thread2 = Thread(target=sniff, args=(sock, tracking_tunnels))
     thread1.start()
-    timer = pg.QtCore.QTimer()
-    timer.timeout.connect(network_load_plot.update)
-    timer.start(100)
-    if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
-        QtGui.QApplication.instance().exec_()
-
+    thread2.start()
+    pg.QtGui.QApplication.exec_()
     thread1.join()
-
     thread2.join()
 
 
 def update_plot(network_load_plot):
     while True:
-        sleep(3)
         network_load_plot.update(True)
+        sleep(5)
 
 
-def sniff(sock, network_load_plot, tracking_tunnels):
+def sniff(sock, tracking_tunnels):
     with PCAPWriter('dump/dump') as writer:
         try:
             while True:
@@ -70,13 +63,9 @@ def sniff(sock, network_load_plot, tracking_tunnels):
                     raw_data = raw_data.original
                     print('-'*20)
 
-                    writer.dump_frame_to_pcap(raw_data)
+                    # writer.dump_frame_to_pcap(raw_data)
 
                     frame = Frame(raw_data)
-
-                    for tunnel in tracking_tunnels:
-                        tunnel.check_frame(frame)
-
                     print_ethernet_frame(frame)
 
                     parsed_packet = None
@@ -89,6 +78,9 @@ def sniff(sock, network_load_plot, tracking_tunnels):
                     elif frame.ether_type == 'ARP':
                         parsed_packet = ARPPacket(frame.data)
                         print_arp_packet(parsed_packet)
+
+                    for tunnel in tracking_tunnels:
+                        tunnel.check_packet(parsed_packet)
 
                     if (isinstance(parsed_packet, IPv4Packet) or
                             isinstance(parsed_packet, IPv6Packet)):

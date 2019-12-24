@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 
-from dpkt import hexdump
+from hexdump import hexdump
 
 from unpacker.segment import UDPSegment, TCPSegment
 
@@ -22,7 +22,7 @@ class TestSegment(unittest.TestCase):
         self.assertEqual(
             hexdump(
                 b'\xa2\x15\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x03api'
-                b'\x07browser\x06yandex\x02ru\x00\x00\x01\x00\x01'),
+                b'\x07browser\x06yandex\x02ru\x00\x00\x01\x00\x01', 'return'),
             segment.data
         )
 

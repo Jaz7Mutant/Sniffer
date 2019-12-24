@@ -14,8 +14,8 @@ class IPv4Packet:
         self.flags = flags_offset >> 13
         self.offset = (flags_offset & 127) * 3
         self.ttl, self.protocol = struct.unpack('! B B', raw_packet[8:10])
-        self.source = ipv4(raw_packet[12:16])
-        self.target = ipv4(raw_packet[16:20])
+        self.source_ip = ipv4(raw_packet[12:16])
+        self.target_ip = ipv4(raw_packet[16:20])
         self.data = raw_packet[self.header_len:]
 
 
@@ -25,8 +25,8 @@ class IPv6Packet:
         self.version = version_header_len >> 4
         self.payload_length, self.protocol, self.hop_limit = struct.unpack(
             '! H B B', raw_packet[4:8])
-        self.source = ipv6(raw_packet[8:24])
-        self.target = ipv6(raw_packet[24:40])
+        self.source_ip = ipv6(raw_packet[8:24])
+        self.target_ip = ipv6(raw_packet[24:40])
         self.data = raw_packet[40:]
 
 
