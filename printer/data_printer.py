@@ -1,6 +1,6 @@
-from package_parser import Frame
-from packet import IPv4Packet, IPv6Packet, ARPPacket
-from segment import TCPSegment, UDPSegment
+from unpacker.frame import Frame
+from unpacker.packet import IPv4Packet, IPv6Packet, ARPPacket
+from unpacker.segment import TCPSegment, UDPSegment
 
 
 def print_ethernet_frame(frame: Frame):
@@ -29,8 +29,8 @@ def print_ipv4_packet(packet: IPv4Packet):
             packet.offset,
             packet.ttl,
             packet.protocol,
-            packet.target,
-            packet.source
+            packet.target_ip,
+            packet.source_ip
         )
     )
 
@@ -40,17 +40,17 @@ def print_ipv6_packet(packet: IPv6Packet):
         '\n\tIPv6 Packet: '
         '\n\t\tVersion: {}'
         '\n\t\tPayload length: {}'
-        '\n\t\tNext header: {}'
+        '\n\t\tProtocol: {}'
         '\n\t\tHop limit: {}'
         '\n\t\tSource: {}'
         '\n\t\tTarget: {}'
         .format(
             packet.version,
             packet.payload_length,
-            packet.next_header,
+            packet.protocol,
             packet.hop_limit,
-            packet.source,
-            packet.target
+            packet.source_ip,
+            packet.target_ip
         )
     )
 

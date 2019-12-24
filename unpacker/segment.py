@@ -1,17 +1,14 @@
 import struct
-
-from dpkt import hexdump
+import hexdump
 
 
 class OtherSegment:
-    # todo
-    pass
+    pass  # todo
 
 
 # protocol == 1
 class ICMPSegment:
-    # todo
-    pass
+    pass  # todo
 
 
 # protocol == 17
@@ -19,7 +16,7 @@ class UDPSegment:
     def __init__(self, raw_segment: bytes):
         self.source_port, self.target_port, self.size = struct.unpack(
             '! H H H', raw_segment[:6])
-        self.data = hexdump(raw_segment[8:])
+        self.data = hexdump.hexdump(raw_segment[8:], 'return')
 
 
 # protocol == 6
@@ -36,4 +33,4 @@ class TCPSegment:
         self.fin = (flags & 1)
         self.window_size = int.from_bytes(raw_segment[14:16], byteorder='big')
         self.urg_pointer = int.from_bytes(raw_segment[18:20], byteorder='big')
-        self.data = hexdump(raw_segment[24:])
+        self.data = hexdump.hexdump(raw_segment[24:], 'return')
