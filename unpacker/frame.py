@@ -15,4 +15,3 @@ class Frame:
         self.source_mac = format_mac(raw_frame[6:12])
         self.ether_type = self.ether_types[raw_frame[12:14].hex()]
         self.data = raw_frame[14:]
-
