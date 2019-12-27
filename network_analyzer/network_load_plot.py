@@ -1,12 +1,13 @@
-import pyqtgraph as pg
 from typing import List
 
-from network_analyzer.tracking_tunnel import TrackingTunnel
-from unpacker.colors import COLORS
+import pyqtgraph as pg
+
+from network_analyzer.colors import COLORS
+from network_analyzer.tracking_connection import TrackingConnection
 
 
 class NetworkLoadPlot:
-    def __init__(self, tracking_tunnels: List[TrackingTunnel]):
+    def __init__(self, tracking_tunnels: List[TrackingConnection]):
         self.lock = False
         self.plot = pg.plot()
         self.plot.setClipToView(True)
@@ -28,21 +29,17 @@ class NetworkLoadPlot:
                 )
             )
 
-    def update(self, new_values: bool = False):
+    def update(self):
         if self.lock:
             return
         self.lock = True
-        if new_values:
-            if self.i <= self.window_size:
-                self.plot.setRange(xRange=[0, self.window_size])
-            else:
-                self.plot.setRange(xRange=[self.i - self.window_size, self.i])
-
-            for j, curve in enumerate(self.curves):
-                curve.setData(self.tracking_tunnels[j]
-                              .get_updated_frame_count())
-            self.i += 1
+        if self.i <= self.window_size:
+            self.plot.setRange(xRange=[0, self.window_size])
         else:
-            for j, curve in enumerate(self.curves):
-                curve.setData(self.tracking_tunnels[j].packet_count[0:-1])
+            self.plot.setRange(xRange=[self.i - self.window_size, self.i])
+
+        for j, curve in enumerate(self.curves):
+            curve.setData(self.tracking_tunnels[j]
+                          .get_updated_frame_count())
+        self.i += 1
         self.lock = False

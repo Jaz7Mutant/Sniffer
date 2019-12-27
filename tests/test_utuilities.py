@@ -2,6 +2,8 @@ import os
 import sys
 import unittest
 
+from network_analyzer.colors import COLORS
+
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
 from unpacker.utilities import format_mac, ipv4, ipv6
@@ -20,3 +22,6 @@ class TestUtilities(unittest.TestCase):
         self.assertEqual(
             'F8:63:3F:FC:9B:80', format_mac(b'\xf8c?\xfc\x9b\x80')
         )
+
+    def test_colors(self):
+        self.assertTrue(len(COLORS) > 0)
