@@ -16,10 +16,10 @@ class TestModeParser(unittest.TestCase):
 
     def test_get_tracking_connections(self):
         parser = ModeParser()
-        with mock.patch('builtins.input', lambda *_:''):
+        with mock.patch('builtins.input', lambda *_: ''):
             self.assertEqual([], parser.get_tracking_connections(True))
 
     def test_get_args(self):
         parser = ModeParser()
-        sys.argv = ['prog', '-c', '-d', '-p']
-        self.assertEqual((True, True, True), parser.get_settings())
+        sys.argv = ['prog', '-c', '-d', '-p', '-s']
+        self.assertEqual((True, True, True, True), parser.get_settings())

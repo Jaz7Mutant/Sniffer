@@ -1,5 +1,6 @@
-from struct import pack
+import os
 import time
+from struct import pack
 
 
 class PCAPWriter:
@@ -16,21 +17,21 @@ class PCAPWriter:
         return self.__enter__()
 
     def close(self):
-        return self.__exit__(None, None, None)
+        self.__exit__(None, None, None)
 
     def _write_packet_header(self, frame):
         ts_sec = pack("i", int(time.time()))
         ts_usec = pack("i", 0)
         incl_len = pack("i", len(frame) % self._snaplen)
         orig_len = pack("i", len(frame))
-
         data_to_write = [ts_sec, ts_usec, incl_len, orig_len]
 
         for x in data_to_write:
             self._fh.write(x)
 
     def __enter__(self):
-        self._fh = open('dump/' + self.filename + '.pcap', 'wb+')  # todo linux
+        files_count = len(os.listdir('dump'))
+        self._fh = open(f'dump/#{files_count}.{self.filename}.pcap', 'wb+')
         magic_number = bytes.fromhex("d4c3b2a1")
         major_ver = pack("H", 2)
         minor_ver = pack("H", 4)

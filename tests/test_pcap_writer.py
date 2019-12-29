@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 import unittest
@@ -14,7 +15,8 @@ class TestPCAPWriter(unittest.TestCase):
         self.assertEqual('fn', writer.filename)
 
     def _check_global_pcap_header(self):
-        with open('dump/test.pcap', 'rb') as fh:
+        filename = glob.glob('dump/*test.pcap')[0]
+        with open(filename, 'rb') as fh:
             self.assertEqual(
                 'd4c3b2a1020004005046000000000000ffff000001000000',
                 fh.readline().hex())
@@ -23,12 +25,14 @@ class TestPCAPWriter(unittest.TestCase):
         with PCAPWriter('test') as writer:
             pass
         self._check_global_pcap_header()
+        self._clear_garbage()
 
     def test_open(self):
         writer = PCAPWriter('test')
         writer.open()
         writer.close()
         self._check_global_pcap_header()
+        self._clear_garbage()
 
     def test_dump_frame(self):
         with mock.patch('time.time', lambda: 0):
@@ -40,10 +44,18 @@ class TestPCAPWriter(unittest.TestCase):
                 b'\x13\xc5\xca\x86\xda\x1a\xe6\xff\x8cP\x10\xff\xff\xe5J\x00'
             )
             writer.close()
-            with open('dump/test.pcap', 'rb') as fh:
+            filename = glob.glob('dump/*test.pcap')[0]
+            with open(filename, 'rb') as fh:
                 self.assertEqual(
                     'd4c3b2a1020004005046000000000000ffff000001000000000000000'
                     '000000035000000350000002ef34689ff19ac84c694bddc0800457000'
                     '28b5bb400035063be5b28de024c0a80065409ecf13c5ca86da1ae6ff8'
                     'c5010ffffe54a00',
                     fh.readline().hex())
+        self._clear_garbage()
+
+    @staticmethod
+    def _clear_garbage():
+        test_files = glob.glob('dump/#*test.pcap')
+        for file in test_files:
+            os.remove(file)

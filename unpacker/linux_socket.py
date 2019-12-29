@@ -18,3 +18,6 @@ class LinuxSocket(SocketHandler):
             raw_data = self.sock.recvfrom(65565)
             if raw_data:
                 return raw_data[0]
+
+    def send_frame(self, frame: bytes):
+        self.sock.sendall(frame)

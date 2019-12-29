@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 import unittest
@@ -18,6 +19,9 @@ class TestTrackingConnection(unittest.TestCase):
         self.assertIsNotNone(conn.pcap_writer)
         self.assertEqual([0], conn.packet_count)
         conn.close()
+        test_files = glob.glob('dump/*12.34.34.34 -to- 12.21.12.21.pcap')
+        for file in test_files:
+            os.remove(file)
 
     def test_broadcast_init(self):
         conn = TrackingConnection('ALL', 'ALL', False, True)
@@ -25,6 +29,7 @@ class TestTrackingConnection(unittest.TestCase):
         self.assertEqual('ALL', conn.source_ip)
         self.assertTrue(conn.broadcast)
         conn.close()
+
 
     def test_check_packet(self):
         conn = TrackingConnection(

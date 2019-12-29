@@ -1,4 +1,6 @@
 import argparse
+import glob
+import os
 import socket
 import sys
 from typing import List
@@ -10,9 +12,14 @@ from unpacker.windows_socket import WindowsSocket
 
 
 class ModeParser:
-    def get_settings(self) -> (SocketHandler, bool, bool, bool):
+    def get_settings(self) -> (bool, bool, bool, bool):
         namespace = self._get_args()
-        return namespace.console, namespace.plot, namespace.dump
+        return (
+            namespace.console,
+            namespace.plot,
+            namespace.dump,
+            namespace.send
+        )
 
     def get_socket(self) -> SocketHandler:
         if sys.platform == 'win32':
@@ -24,6 +31,18 @@ class ModeParser:
         else:
             print(sys.platform)
             raise NotImplementedError('Your OS is not supported')
+
+    @staticmethod
+    def get_dump_name() -> str:
+        print('Choose the dump file:')
+        files = os.listdir('dump')
+        for file in files:
+            if file[0] == '#':
+                print(file)
+        filename = input('Write file number (#xxx)\n')
+        a = glob.glob(f'dump/{filename}*')[0]
+        print(a)
+        return a
 
     @staticmethod
     def get_tracking_connections(write_to_pcap) -> List[TrackingConnection]:
@@ -83,6 +102,13 @@ class ModeParser:
             '-d',
             '--dump',
             help='Write dumps for every tracking connection',
+            action='store_true'
+        )
+
+        parser.add_argument(
+            '-s',
+            '--send',
+            help='Send frames from pcap dump',
             action='store_true'
         )
         return parser.parse_args()
