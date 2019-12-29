@@ -2,11 +2,10 @@ import os
 import sys
 import unittest
 
-from network_analyzer.colors import COLORS
-
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
 from unpacker.utilities import format_mac, ipv4, ipv6
+from network_analyzer.colors import COLORS
 
 
 class TestUtilities(unittest.TestCase):

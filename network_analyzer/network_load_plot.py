@@ -7,7 +7,7 @@ from network_analyzer.tracking_connection import TrackingConnection
 
 
 class NetworkLoadPlot:
-    def __init__(self, tracking_tunnels: List[TrackingConnection]):
+    def __init__(self, tracking_connections: List[TrackingConnection]):
         self.lock = False
         self.plot = pg.plot()
         self.plot.setClipToView(True)
@@ -17,15 +17,15 @@ class NetworkLoadPlot:
         self.plot.plotItem.showGrid(False, True, 50)
         self.i = 0
         self.window_size = 15
-        self.tracking_tunnels = tracking_tunnels
+        self.tracking_connections = tracking_connections
         self.curves = list()
-        for j, tunnel in enumerate(self.tracking_tunnels):
+        for j, connection in enumerate(self.tracking_connections):
             color = COLORS[j % len(COLORS)]
             self.curves.append(
                 self.plot.plot(
-                    tunnel.packet_count,
+                    connection.packet_count,
                     pen=color,
-                    name=f'{tunnel.source_ip} -> {tunnel.target_ip}'
+                    name=f'{connection.source_ip} -> {connection.target_ip}'
                 )
             )
 
@@ -39,7 +39,7 @@ class NetworkLoadPlot:
             self.plot.setRange(xRange=[self.i - self.window_size, self.i])
 
         for j, curve in enumerate(self.curves):
-            curve.setData(self.tracking_tunnels[j]
+            curve.setData(self.tracking_connections[j]
                           .get_updated_frame_count())
         self.i += 1
         self.lock = False
