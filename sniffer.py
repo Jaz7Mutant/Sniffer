@@ -1,5 +1,4 @@
 #! /usr/local/bin/python3.5
-import sys
 from threading import Thread
 
 import readchar

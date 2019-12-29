@@ -3,11 +3,10 @@ import os
 import sys
 import unittest
 
-from unpacker.packet import IPv4Packet
-
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
 from network_analyzer.tracking_connection import TrackingConnection
+from unpacker.packet import IPv4Packet
 
 
 class TestTrackingConnection(unittest.TestCase):
@@ -29,7 +28,6 @@ class TestTrackingConnection(unittest.TestCase):
         self.assertEqual('ALL', conn.source_ip)
         self.assertTrue(conn.broadcast)
         conn.close()
-
 
     def test_check_packet(self):
         conn = TrackingConnection(
