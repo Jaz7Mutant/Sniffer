@@ -4,6 +4,7 @@ from threading import Thread
 
 import readchar
 
+from frame_sender.frame_sender import FrameSender
 from printer.data_printer import print_ethernet_frame, print_ipv4_packet, \
     print_tcp_segment, print_udp_segment, print_ipv6_packet, print_arp_packet
 from settings.mode_parser import ModeParser
@@ -15,8 +16,15 @@ from unpacker.segment import TCPSegment, UDPSegment
 class Sniffer:
     def __init__(self):
         mode_parser = ModeParser()
-        self.console, self.plot, self.dump = mode_parser.get_settings()
+        self.console, self.plot, self.dump, self.send = \
+            mode_parser.get_settings()
         self.sock = mode_parser.get_socket()
+        if self.send:
+            filename = mode_parser.get_dump_name()
+            frame_sender = FrameSender(filename, self.sock)
+            frame_sender.send_frames()
+            print('Completed')
+            exit(0)
         self.tracking_connections = []
         if self.plot:
             from network_analyzer.plot_handler import PlotHandler

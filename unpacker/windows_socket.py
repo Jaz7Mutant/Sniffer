@@ -13,3 +13,6 @@ class WindowsSocket(SocketHandler):
             raw_data = self.sock.recv()
             if raw_data:
                 return raw_data.original
+
+    def send_frame(self, frame: bytes):
+        self.sock.send(frame)

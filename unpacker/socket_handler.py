@@ -4,3 +4,6 @@ class SocketHandler:
 
     def get_raw_frame(self) -> bytes:
         raise NotImplementedError
+
+    def send_frame(self, frame: bytes):
+        raise NotImplementedError
