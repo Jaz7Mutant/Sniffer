@@ -41,7 +41,6 @@ class ModeParser:
                 print(file)
         filename = input('Write file number (#xxx)\n')
         a = glob.glob(f'dump/{filename}*')[0]
-        print(a)
         return a
 
     @staticmethod

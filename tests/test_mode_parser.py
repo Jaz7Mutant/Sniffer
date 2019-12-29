@@ -3,6 +3,8 @@ import sys
 import unittest
 from unittest import mock
 
+from network_analyzer.tracking_connection import TrackingConnection
+
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
 from settings.mode_parser import ModeParser
@@ -18,6 +20,10 @@ class TestModeParser(unittest.TestCase):
         parser = ModeParser()
         with mock.patch('builtins.input', lambda *_: ''):
             self.assertEqual([], parser.get_tracking_connections(True))
+
+    def test_get_dump_name(self):
+        with mock.patch('builtins.input', lambda *_: ''):
+            pass
 
     def test_get_args(self):
         parser = ModeParser()
