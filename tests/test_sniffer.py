@@ -6,6 +6,7 @@ from unittest import mock
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
+sys.platform = 'win32'
 from sniffer import Sniffer
 from unpacker.socket_handler import SocketHandler
 
