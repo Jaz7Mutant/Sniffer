@@ -23,7 +23,7 @@ class TestModeParser(unittest.TestCase):
     def test_get_dump_name(self):
         with mock.patch('builtins.input', lambda *_: ''):
             parser = ModeParser()
-            self.assertIsNotNone(parser.get_dump_name())
+            self.assertRaises(IndexError, parser.get_dump_name)
 
     def test_get_args(self):
         parser = ModeParser()
