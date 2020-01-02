@@ -11,4 +11,3 @@ qtgui==0.0.1
 readchar==2.0.1
 requests==2.22.0
 scapy==2.4.3
-unittest

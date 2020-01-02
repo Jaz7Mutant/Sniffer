@@ -1,7 +1,8 @@
 import os
 import sys
 import unittest
-from unittest.mock import Mock
+
+from mock import Mock
 
 sys.modules['pyqtgraph'] = Mock()
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
