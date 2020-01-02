@@ -19,7 +19,8 @@ class TestSniffer(unittest.TestCase):
                 'unpacker.socket_handler.SocketHandler.get_raw_frame', lambda:
                 b'5\x827\xe7\x8f\15T\x92XO&\x10\x07\xb4\x1c\xfbW\xaa\xb7;'
                 b'\x84<>\x8d\xc8\xed>\x0e\xd4\xdc\xd1\xd3\xa6k\xc9\xeb2\xd98'
-                b'\xc9\xc2\xb8w\x82V\xc2\x94\xf3\x12\x08\x12*N'):
+                b'\xc9\xc2\xb8w\x82V\xc2\x94\xf3\x12\x08\x12*N',
+                create=True):
             thread = Thread(
                 target=Sniffer.sniff, args=(SocketHandler(0), [], False))
             thread.start()
@@ -30,14 +31,20 @@ class TestSniffer(unittest.TestCase):
     def test_quit_button(self):
         with mock.patch(
                 'settings.mode_parser.ModeParser.get_settings',
-                lambda *_: (False, False, False, False)):
+                lambda *_: (False, False, False, False),
+                create=True):
             with mock.patch(
                     'unpacker.socket_handler.SocketHandler.get_raw_frame',
-                    lambda: b' '):
+                    lambda: b' ',
+                    create=True):
                 with mock.patch(
                         'settings.mode_parser.ModeParser.get_socket',
-                        lambda *_: SocketHandler(0)):
-                    with mock.patch('readchar.readchar', lambda *_: ' '):
+                        lambda *_: SocketHandler(0),
+                        create=True):
+                    with mock.patch(
+                            'readchar.readchar',
+                            lambda *_: ' ',
+                            create=True):
                         sniffer = Sniffer()
                         self.assertIsNone(sniffer.wait_for_quit())
                         sniffer.finish = True
@@ -47,26 +54,32 @@ class TestSniffer(unittest.TestCase):
     def test_init(self):
         with mock.patch(
                 'settings.mode_parser.ModeParser.get_settings',
-                lambda *_: (True, False, True, True)), \
+                lambda *_: (True, False, True, True),
+                create=True), \
              mock.patch(
                  'settings.mode_parser.ModeParser.get_socket',
-                 lambda *_: None), \
+                 lambda *_: None,
+                 create=True), \
              mock.patch(
                  'settings.mode_parser.ModeParser.get_dump_name',
-                 lambda *_: None), \
+                 lambda *_: None,
+                 create=True), \
              mock.patch(
                  'frame_sender.pcap_reader.PCAPReader.__enter__',
-                 lambda *_: None), \
+                 lambda *_: None,
+                 create=True), \
              mock.patch(
                  'frame_sender.pcap_reader.PCAPReader.get_next_frame',
-                 lambda *_: None), \
+                 lambda *_: None,
+                 create=True), \
              mock.patch(
                  'frame_sender.pcap_reader.PCAPReader.__exit__',
-                 lambda *_: None), \
+                 lambda *_: None,
+                 create=True), \
              mock.patch(
                  'builtins.exit',
-                 lambda *_: None
-             ):
+                 lambda *_: None,
+                 create=True):
             sniffer = Sniffer()
             self.assertTrue(sniffer.console)
             self.assertFalse(sniffer.plot)
