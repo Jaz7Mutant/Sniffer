@@ -4,9 +4,11 @@ import unittest
 from threading import Thread
 from unittest import mock
 
+from mock import Mock
+
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              os.path.pardir))
-sys.platform = 'win32'
+sys.modules['readchar'] = Mock()
 from sniffer import Sniffer
 from unpacker.socket_handler import SocketHandler
 
