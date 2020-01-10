@@ -34,7 +34,6 @@ class ARPPacket:
     def __init__(self, raw_packet: bytes):
         self.hardware_type = raw_packet[:2].hex()
         self.protocol_type = raw_packet[2:4].hex()
-        print(self.protocol_type)
         if self.protocol_type == '0800':
             self.source_mac = format_mac(raw_packet[8:14])
             self.source_ip = ipv4(raw_packet[14:18])

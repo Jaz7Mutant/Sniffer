@@ -31,7 +31,11 @@ class PCAPWriter:
 
     def __enter__(self):
         files_count = len(os.listdir('dump'))
-        self._fh = open(f'dump/#{files_count}.{self.filename}.pcap', 'wb+')
+        self._fh = open(
+            f'dump/#{files_count}.{self.filename}.pcap',
+            'wb+',
+            buffering=8192
+        )
         magic_number = bytes.fromhex("d4c3b2a1")
         major_ver = pack("H", 2)
         minor_ver = pack("H", 4)
