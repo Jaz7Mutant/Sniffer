@@ -4,6 +4,7 @@ from threading import Thread
 import readchar
 
 from frame_sender.frame_sender import FrameSender
+from network_analyzer.tracking_connection import TrackingConnection
 from printer.data_printer import print_ethernet_frame, print_ipv4_packet, \
     print_tcp_segment, print_udp_segment, print_ipv6_packet, print_arp_packet
 from settings.mode_parser import ModeParser
@@ -17,9 +18,23 @@ class Sniffer:
         mode_parser = ModeParser()
         self.console, self.plot, self.dump, self.send = \
             mode_parser.get_settings()
+        if (
+                not self.console
+                and not self.plot
+                and not self.dump
+                and not self.send):
+            print(
+                'Use "-h" or "--help" as arguments to get info about '
+                'available options'
+            )
+            exit(0)
         self.sock = mode_parser.get_socket()
         if self.send:
-            filename = mode_parser.get_dump_name()
+            try:
+                filename = mode_parser.get_dump_name()
+            except IndexError:
+                print('Wrong filename')
+                exit(-1)
             frame_sender = FrameSender(filename, self.sock)
             frame_sender.send_frames()
             print('Completed')
@@ -30,6 +45,10 @@ class Sniffer:
             self.tracking_connections = mode_parser.get_tracking_connections(
                 self.dump)
             self.plot_handler = PlotHandler(self.tracking_connections)
+        else:
+            self.tracking_connections = [
+                TrackingConnection('ALL', 'ALL', self.dump, True)
+            ]
         self.sniffer = Thread(target=self.sniff)
         self.quit_handler = Thread(target=self.wait_for_quit)
         self.finish = False

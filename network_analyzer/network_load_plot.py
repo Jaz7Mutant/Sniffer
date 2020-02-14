@@ -24,8 +24,8 @@ class NetworkLoadPlot:
             self.curves.append(
                 self.plot.plot(
                     connection.packet_count,
-                    pen=color,
-                    name=f'{connection.source_ip} -> {connection.target_ip}'
+                    pen=pg.mkPen(color, width=2),
+                    name=f'{connection.source_ip} <-> {connection.target_ip}'
                 )
             )
 

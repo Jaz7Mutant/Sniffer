@@ -21,7 +21,7 @@ class TestModeParser(unittest.TestCase):
             self.assertEqual([], parser.get_tracking_connections(True))
 
     def test_get_dump_name(self):
-        with mock.patch('builtins.input', lambda *_: ''):
+        with mock.patch('builtins.input', lambda *_: '-1'):
             parser = ModeParser()
             self.assertRaises(IndexError, parser.get_dump_name)
 

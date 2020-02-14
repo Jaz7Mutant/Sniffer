@@ -21,5 +21,5 @@ class PlotHandler:
 
     def update_plot(self):
         while not self.finish:
-            sleep(0.5)
+            sleep(5)
             self.network_load_plot.update()

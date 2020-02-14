@@ -31,7 +31,7 @@ class TestSniffer(unittest.TestCase):
     def test_quit_button(self):
         with mock.patch(
                 'settings.mode_parser.ModeParser.get_settings',
-                lambda *_: (False, False, False, False),
+                lambda *_: (True, False, False, False),
                 create=True):
             with mock.patch(
                     'unpacker.socket_handler.SocketHandler.get_raw_frame',
