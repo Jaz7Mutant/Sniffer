@@ -62,12 +62,14 @@
 - Тесты: `tests/`
 
 ## Требования
-    Операционная система Windows или Linux.
-    hexdump
-    PyQt5
-    pyqtgraph
-    readchar
-    scapy (Только для Windows)
+- Операционная система Windows или Linux.
+- hexdump
+- PyQt5
+- pyqtgraph
+- readchar
+- scapy (Только для Windows)
+- [NPCAP (Только для Windows)](https://nmap.org/npcap/)
+        
 
 
 ## Стадии разработки
